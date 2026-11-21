@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do Imóvel - LA Imóveis</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #1a2a3a;
+            --gold: #c9a959;
+            --gold-light: #e0c97a;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --text-dark: #222;
+            --shadow: 0 8px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER SIMPLES ===== */
+        header {
+            background: var(--primary);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--white); }
+
+        .btn-voltar {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-voltar:hover { color: var(--gold); }
+
+        /* ===== CONTEÚDO ===== */
+        .imovel-page {
+            padding: 50px 0 80px;
+        }
+
+        /* Cabeçalho do imóvel */
+        .imovel-header {
+            margin-bottom: 30px;
+        }
+
+        .imovel-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .imovel-header .endereco {
+            color: #666;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .imovel-header .endereco i { color: var(--gold); }
+
+        .imovel-header .preco {
+            font-size: 2rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin-top: 12px;
+        }
+
+        /* ===== GALERIA ===== */
+        .galeria {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 40px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .galeria-principal {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .galeria-principal img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .galeria-principal:hover img {
+            transform: scale(1.03);
+        }
+
+        .galeria-miniaturas {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .galeria-miniaturas img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            transition: var(--transition);
+            border-radius: 4px;
+        }
+
+        .galeria-miniaturas img:hover {
+            opacity: 0.85;
+            transform: scale(1.02);
+        }
+
+        /* Contador de fotos */
+        .contador-fotos {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ===== LIGHTBOX (foto ampliada) ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox.active { display: flex; }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #fff;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover { color: var(--gold); transform: rotate(90deg); }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 3rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-nav:hover { background: var(--gold); color: var(--primary); }
+
+        .lightbox-prev { left: 30px; }
+        .lightbox-next { right: 30px; }
+
+        /* ===== INFORMAÇÕES ===== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .info-grid h2 {
+            font-size: 1.6rem;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        .info-grid p {
+            color: #555;
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+        }
+
+        /* Características */
+        .caracteristicas {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .caracteristicas li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555;
+        }
+
+        .caracteristicas i {
+            color: var(--gold);
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        /* Card lateral de contato */
+        .card-contato {
+            background: var(--gray);
+            padding: 30px;
+            border-radius: 16px;
+            height: fit-content;
+            position: sticky;
+            top: 30px;
+        }
+
+        .card-contato h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .card-contato .preco-card {
+            color: var(--gold);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .card-contato input,
+        .card-contato textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .card-contato input:focus,
+        .card-contato textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,169,89,0.2);
+        }
+
+        .btn-primario {
+            background: var(--gold);
+            color: var(--primary);
+            padding: 14px 24px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primario:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201,169,89,0.4);
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 900px) {
+            .galeria {
+                grid-template-columns: 1fr;
+            }
+            .galeria-miniaturas {
+                grid-template-rows: none;
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .galeria-principal img { height: 350px; }
+            .galeria-miniaturas img { height: 120px; }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-contato {
+                position: static;
+            }
+            .imovel-header h1 { font-size: 1.8rem; }
+            .imovel-header .preco { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 600px) {
+            .galeria-principal img { height: 260px; }
+            .galeria-miniaturas img { height: 90px; }
+            .lightbox-nav { width: 44px; height: 44px; font-size: 1.4rem; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+            .lightbox-close { top: 15px; right: 20px; font-size: 2rem; }
+            .caracteristicas { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">AL<span>Imóveis</span></a>
+            <a href="index.html" class="btn-voltar"><i class="fas fa-arrow-left"></i> Voltar ao site</a>
+        </div>
+    </header>
+
+    <!-- ===== CONTEÚDO DO IMÓVEL ===== -->
+    <main class="imovel-page">
+        <div class="container">
+
+            <!-- Cabeçalho do imóvel -->
+            <div class="imovel-header">
+                <h1 id="titulo">Apartamento 3 quartos</h1>
+                <div class="endereco">
+                    <i class="fas fa-map-pin"></i>
+                    <span id="endereco"></span>
+                </div>
+                <div class="preco" id="preco">R$ </div>
+            </div>
+
+            <!-- Galeria -->
+            <div class="galeria">
+                <div class="galeria-principal" onclick="abrirLightbox(0)">
+                    <img id="fotoPrincipal" src="img/ap-aguasClaras/apto-1.jpeg" alt="Foto principal do imóvel" />
+                    <div class="contador-fotos">
+                        <i class="fas fa-camera"></i>
+                        <span id="contador">1 / 8</span>
+                    </div>
+                </div>
+
+                <div class="galeria-miniaturas">
+                    <img src="img/ap-aguasClaras/apto-2.jpeg" alt="Foto 2" onclick="trocarPrincipal(1)" />
+                    <img src="img/ap-aguasClaras/apto-3.jpeg" alt="Foto 3" onclick="trocarPrincipal(2)" />
+                    <img src="img/ap-aguasClaras/apto-4.jpeg" alt="Foto 4" onclick="trocarPrincipal(3)" />
+                    <img src="img/ap-aguasClaras/apto-5.jpeg" alt="Foto 4" onclick="trocarPrincipal(3)" />
+                    <img src="img/ap-aguasClaras/apto-6.jpeg" alt="Foto 4" onclick="trocarPrincipal(3)" />
+                    <img src="img/ap-aguasClaras/apto-7.jpeg" alt="Foto 4" onclick="trocarPrincipal(3)" />
+                    <img src="img/ap-aguasClaras/apto-8.jpeg" alt="Foto 4" onclick="trocarPrincipal(3)" />
+                </div>
+            </div>
+
+            <!-- Informações + Card de contato -->
+            <div class="info-grid">
+
+                <!-- Descrição -->
+                <div>
+                    <h2>Sobre o Imóvel</h2>
+                    <p id="descricao">
+                        Excelente apartamento .
+                        Localização privilegiada, próximo ao metrô, supermercados e escolas.
+                        Andar alto, com sol da manhã, varanda gourmet e 2 vagas de garagem cobertas.
+                        Condomínio com lazer completo: piscina, academia, salão de festas e playground.
+                    </p>
+
+                    <h2 style="margin-top: 30px;">Características</h2>
+                    <ul class="caracteristicas" id="caracteristicas">
+                        <li><i class="fas fa-bed"></i> 3 quartos (1 suíte)</li>
+                        <li><i class="fas fa-bath"></i> 2 banheiros</li>
+                        <li><i class="fas fa-car"></i> 2 vagas de garagem</li>
+                        <li><i class="fas fa-ruler-combined"></i> 120 m² de área útil</li>
+                        <li><i class="fas fa-swimming-pool"></i> Piscina</li>
+                        <li><i class="fas fa-dumbbell"></i> Academia</li>
+                        <li><i class="fas fa-elevator"></i> Elevador</li>
+                        <li><i class="fas fa-tree"></i> Área verde</li>
+                    </ul>
+                </div>
+
+                <!-- Card de contato -->
+                <aside class="card-contato">
+                    <h3>Gostou deste imóvel?</h3>
+                    <div class="preco-card" id="precoCard"></div>
+
+                    <form id="formInteresse">
+                        <input type="text" id="nomeInteresse" placeholder="Seu nome" required />
+                        <input type="tel" id="telInteresse" placeholder="Telefone / WhatsApp" required />
+                        <input type="email" id="emailInteresse" placeholder="Seu e-mail" required />
+                        <textarea id="msgInteresse" rows="3" placeholder="Mensagem (opcional)"></textarea>
+                        <button type="submit" class="btn-primario">
+                            <i class="fab fa-whatsapp"></i> Tenho Interesse
+                        </button>
+                    </form>
+                </aside>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== LIGHTBOX ===== -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="fecharLightbox()">&times;</button>
+        <button class="lightbox-nav lightbox-prev" onclick="fotoAnterior()">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <img id="fotoLightbox" src="" alt="Foto ampliada" />
+        <button class="lightbox-nav lightbox-next" onclick="proximaFoto()">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        // ===== LISTA DE FOTOS DO IMÓVEL =====
+        // Troque os caminhos pelas SUAS fotos
+        const fotos = [
+    'img/ap-aguasClaras/apto-1.jpeg',
+    'img/ap-aguasClaras/apto-2.jpeg',
+    'img/ap-aguasClaras/apto-3.jpeg',
+    'img/ap-aguasClaras/apto-4.jpeg',
+    'img/ap-aguasClaras/apto-5.jpeg',
+    'img/ap-aguasClaras/apto-6.jpeg',
+    'img/ap-aguasClaras/apto-7.jpeg',
+    'img/ap-aguasClaras/apto-8.jpeg'
+];
+
+        let indiceAtual = 0;
+
+        // Atualiza o contador "1 / 5"
+        function atualizarContador() {
+            document.getElementById('contador').textContent = `${indiceAtual + 1} / ${fotos.length}`;
+        }
+
+        // Troca a foto principal ao clicar numa miniatura
+        function trocarPrincipal(indice) {
+            indiceAtual = indice;
+            document.getElementById('fotoPrincipal').src = fotos[indice];
+            atualizarContador();
+        }
+
+        // Abre o lightbox
+        function abrirLightbox(indice) {
+            indiceAtual = indice;
+            document.getElementById('fotoLightbox').src = fotos[indice];
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden'; // trava o scroll
+        }
+
+        // Fecha o lightbox
+        function fecharLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Navegação do lightbox
+        function proximaFoto() {
+            indiceAtual = (indiceAtual + 1) % fotos.length;
+            document.getElementById('fotoLightbox').src = fotos[indiceAtual];
+            document.getElementById('fotoPrincipal').src = fotos[indiceAtual];
+            atualizarContador();
+        }
+
+        function fotoAnterior() {
+            indiceAtual = (indiceAtual - 1 + fotos.length) % fotos.length;
+            document.getElementById('fotoLightbox').src = fotos[indiceAtual];
+            document.getElementById('fotoPrincipal').src = fotos[indiceAtual];
+            atualizarContador();
+        }
+
+        // Atalhos do teclado (setas e ESC)
+        document.addEventListener('keydown', (e) => {
+            const lb = document.getElementById('lightbox');
+            if (!lb.classList.contains('active')) return;
+            if (e.key === 'Escape') fecharLightbox();
+            if (e.key === 'ArrowRight') proximaFoto();
+            if (e.key === 'ArrowLeft') fotoAnterior();
+        });
+
+        // Fecha ao clicar fora da imagem
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') fecharLightbox();
+        });
+
+        // ===== FORMULÁRIO DE INTERESSE =====
+        document.getElementById('formInteresse').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nome = document.getElementById('nomeInteresse').value.trim();
+            const tel = document.getElementById('telInteresse').value.trim();
+            const email = document.getElementById('emailInteresse').value.trim();
+
+            if (!nome || !tel || !email) {
+                alert('⚠️ Preencha nome, telefone e e-mail.');
+                return;
+            }
+            if (!email.includes('@') || !email.includes('.')) {
+                alert('⚠️ Informe um e-mail válido.');
+                return;
+            }
+
+            alert(`✅ Interesse registrado!\n\nObrigado, ${nome}!\nEntraremos em contato em breve sobre este imóvel.`);
+            e.target.reset();
+        });
+
+        atualizarContador();
+    </script>
+</body>
+</html>

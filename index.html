@@ -1,0 +1,1232 @@
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Imóveis Prime - Corretora de Alto Padrão</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- AOS Library para animações -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a2a3a;
+            --primary-light: #2c4058;
+            --gold: #c9a959;
+            --gold-light: #e0c97a;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --text-dark: #222;
+            --shadow: 0 8px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== BOTÃO WHATSAPP FLUTUANTE ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            background: #25d366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            color: #fff;
+        }
+
+        /* ===== HEADER / NAVBAR ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(60, 68, 113, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 15px 0;
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        header.scrolled {
+            border-bottom: 2px solid var(--gold);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            background: var(--gold);
+            color: var(--primary) !important;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600 !important;
+            transition: var(--transition);
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 169, 89, 0.3);
+        }
+
+        /* ===== MENU HAMBÚRGUER ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            background: var(--white);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary) 0%, #260f11 100%);
+            padding-top: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: ''; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('img/foto3.jpeg') right/contain no-repeat;
+            opacity: 0.25;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: var(--white);
+            max-width: 700px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 span {
+            color: var(--gold);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--primary);
+            padding: 14px 36px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(201, 169, 89, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            padding: 14px 36px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid var(--white);
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        /* ===== BUSCA ===== */
+        .search-box {
+            background: rgba(48, 55, 49, 0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .search-box form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .search-box .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .search-box label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .search-box select,
+        .search-box input {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.9);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box select:focus,
+        .search-box input:focus {
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--gold);
+        }
+
+        .search-box .btn-search {
+            background: var(--gold);
+            color: var(--primary);
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+            height: 48px;
+            white-space: nowrap;
+        }
+
+        .search-box .btn-search:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SEÇÃO DIFERENCIAIS ===== */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-title span {
+            color: var(--gold);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 50px;
+        }
+
+        .diferenciais-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .card-diferencial {
+            background: var(--gray);
+            padding: 40px 25px;
+            border-radius: 16px;
+            text-align: center;
+            transition: var(--transition);
+            border-bottom: 4px solid transparent;
+        }
+
+        .card-diferencial:hover {
+            transform: translateY(-10px);
+            border-bottom-color: var(--gold);
+            box-shadow: var(--shadow);
+        }
+
+        .card-diferencial i {
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin-bottom: 18px;
+        }
+
+        .card-diferencial h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .card-diferencial p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ===== IMÓVEIS EM DESTAQUE ===== */
+        .imoveis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .card-imovel {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid #eee;
+        }
+
+        .card-imovel:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-imovel img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .card-imovel .info {
+            padding: 20px 24px 24px;
+        }
+
+        .card-imovel .info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .card-imovel .info .price {
+            color: var(--gold);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .card-imovel .info .address {
+            color: #777;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .card-imovel .info .btn-detalhes {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+            width: 100%;
+        }
+
+        .card-imovel .info .btn-detalhes:hover {
+            background: var(--gold);
+            color: var(--primary);
+        }
+
+        /* ===== SOBRE NÓS ===== */
+        .sobre-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .sobre-content img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .sobre-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .sobre-content p {
+            color: #555;
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        .sobre-content .btn-primary {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* ===== DEPOIMENTOS ===== */
+        .depoimentos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .card-depoimento {
+            background: var(--gray);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .card-depoimento:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-depoimento img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 16px;
+            border: 3px solid var(--gold);
+        }
+
+        .card-depoimento p {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .card-depoimento h4 {
+            font-weight: 600;
+        }
+
+        .card-depoimento .stars {
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* ===== CONTATO ===== */
+        .contato-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .contato-wrapper form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .contato-wrapper input,
+        .contato-wrapper textarea {
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .contato-wrapper input:focus,
+        .contato-wrapper textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 169, 89, 0.2);
+        }
+
+        .contato-wrapper textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .contato-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .contato-info p {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            color: #555;
+            font-size: 1.05rem;
+        }
+
+        .contato-info i {
+            color: var(--gold);
+            width: 24px;
+            font-size: 1.2rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--primary);
+            color: rgba(255,255,255,0.8);
+            padding: 50px 0 30px;
+        }
+
+        footer .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        footer .logo {
+            font-size: 1.8rem;
+        }
+
+        footer p {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            max-width: 300px;
+        }
+
+        footer h4 {
+            color: var(--white);
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 10px;
+        }
+
+        footer ul a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer ul a:hover {
+            color: var(--gold);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .footer-social a {
+            color: var(--white);
+            background: rgba(255,255,255,0.1);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .footer-social a:hover {
+            background: var(--gold);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 1024px) {
+            .diferenciais-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .imoveis-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .depoimentos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .sobre-content {
+                grid-template-columns: 1fr;
+            }
+            .contato-wrapper {
+                grid-template-columns: 1fr;
+            }
+            footer .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary);
+                padding: 30px 20px;
+                gap: 20px;
+                border-top: 2px solid var(--gold);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 1.1rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+
+            .search-box form {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-box .btn-search {
+                grid-column: span 2;
+            }
+
+            .diferenciais-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .imoveis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .depoimentos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            footer .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            footer p {
+                margin: 12px auto 0;
+            }
+
+            .footer-social {
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .hero-buttons .btn-primary,
+            .hero-buttons .btn-secondary {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-box form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box .btn-search {
+                grid-column: span 1;
+            }
+
+            .diferenciais-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+</script>
+</body>
+</html>
+
+    <!-- ===== WHATSAPP FLUTUANTE ===== -->
+    <a href="https://wa.me/556198210399?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20imóveis."
+       class="whatsapp-float"
+       target="_blank"
+       aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== HEADER ===== -->
+    <header id="header">
+        <div class="container navbar">
+            <a href="#" class="logo">AL<span>Imóveis</span></a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">Início</a></li>
+                <li><a href="#imoveis">Imóveis</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <!--li><a href="#depoimentos">Depoimentos</a></li-->
+                <li><a href="#contato" class="nav-cta">Fale Conosco</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="container hero-content">
+            <h1 data-aos="fade-up">Seu próximo endereço <span>começa aqui!</span></h1>
+            <p data-aos="fade-up" data-aos-delay="100">
+                Especialista em vendas em Brasília - DF. Há 5 anos transformando sonhos em endereços.
+            </p>
+            <div class="hero-buttons" data-aos="fade-up" data-aos-delay="200">
+                <a href="#imoveis" class="btn-primary">Ver Imóveis</a>
+                <a href="#contato" class="btn-secondary">Falar com Especialista</a>
+            </div>
+
+            <!-- Busca -->
+            <div class="search-box" data-aos="fade-up" data-aos-delay="300">
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo">
+                            <option value="todos">Todos</option>
+                            <option value="casa">Casa</option>
+                            <option value="apartamento">Apartamento</option>
+                            <option value="cobertura">Cobertura</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <select id="cidade">
+                            <option value="aguasClaras">Águas Claras</option>
+                            <option value="taguatinga">Taguatinga</option>
+                            <option value="ceilandia">Ceilândia</option>
+                            <option value="guara">Guará</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="preco">Preço Máximo</label>
+                        <input type="number" id="preco" placeholder="R$ 1.000.000" min="0" />
+                    </div>
+                    <button type="submit" class="btn-search">Buscar Imóveis</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DIFERENCIAIS ===== -->
+    <section class="section" id="diferenciais">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Nossos <span>Diferenciais</span></h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Porque escolher a AL Imóveis é a decisão certa para o seu próximo negócio imobiliário.
+            </p>
+
+            <div class="diferenciais-grid">
+                <div class="card-diferencial" data-aos="fade-up" data-aos-delay="0">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Atendimento Personalizado</h3>
+                    <p>Cada cliente é único. Oferecemos consultoria exclusiva para suas necessidades.</p>
+                </div>
+                <div class="card-diferencial" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-building"></i>
+                    <h3>Imóveis Exclusivos</h3>
+                    <p>Temos um portfólio selecionado com as melhores propriedades do mercado.</p>
+                </div>
+                <div class="card-diferencial" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-gavel"></i>
+                    <h3>Suporte Jurídico</h3>
+                    <p>Assessoria completa em documentação e regularização de imóveis.</p>
+                </div>
+                <div class="card-diferencial" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Avaliação Gratuita</h3>
+                    <p>Descubra o valor real do seu imóvel com nossa avaliação sem custo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== IMÓVEIS EM DESTAQUE ===== -->
+    <section class="section" id="imoveis" style="background: var(--gray);">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Imóveis em <span>Destaque</span></h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Conheça algumas das propriedades exclusivas que temos para oferecer.
+            </p>
+
+            <div class="imoveis-grid">
+                <!-- Imóvel 1 -->
+                <div class="card-imovel" data-aos="fade-up" data-aos-delay="0">
+                    <img src="img/ap-aguasClaras/ap1-1.jpeg" alt="Apartamento 3 quartos" loading="lazy" />
+                    <div class="info">
+                        <h3>Apartamento 2 e 3 quartos</h3>
+                        <div class="price">R$ </div>
+                        <div class="address"><i class="fas fa-map-pin"></i> Águas Cláras - DF</div>
+                        <a href="imoveis.html?id=1" class="btn-detalhes">Saiba mais</a>
+                    </div>
+                </div>
+
+                <!-- Imóvel 2 -->
+                <div class="card-imovel" data-aos="fade-up" data-aos-delay="100">
+                    <img src="" alt="Casa com área gourmet" loading="lazy" />
+                    <div class="info">
+                        <h3>Casa</h3>
+                        <div class="price">R$ </div>
+                        <div class="address"><i class="fas fa-map-pin"></i>Guara II </div>
+                        <button class="btn-detalhes" onclick="alert('Em breve mais detalhes deste imóvel!')">Saiba mais</button>
+                    </div>
+                </div>
+
+                <!-- Imóvel 3 -->
+                <div class="card-imovel" data-aos="fade-up" data-aos-delay="200">
+                    <img src="" alt="Apartamento" loading="lazy" />
+                    <div class="info">
+                        <h3>Apartamento de 1 e 2 quartos</h3>
+                        <div class="price">R$ </div>
+                        <div class="address"><i class="fas fa-map-pin"></i> Ceilândia-DF</div>
+                        <button class="btn-detalhes" onclick="alert('Em breve mais detalhes deste imóvel!')">Saiba mais</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SOBRE NÓS ===== -->
+    <section class="section" id="sobre">
+        <div class="container sobre-content">
+            <div data-aos="fade-right">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80" alt="Nossa equipe" loading="lazy" />
+            </div>
+            <div data-aos="fade-left">
+                <h2>Sobre a <span style="color: var(--gold);">AL Imóveis</span></h2>
+                <p>
+                    A <strong>AL Imóveis</strong> nasceu com o propósit
+                    o de revolucionar o mercado
+                    imobiliário em Brasília. Com uma equipe de corretores altamente capacitados e apaixonados pelo que fazem,
+                    já realizamos <strong>centenas de negócios</strong> com excelência e transparência.
+                </p>
+                <p>
+                    Nossa missão é conectar pessoas aos imóveis dos seus sonhos, oferecendo segurança, credibilidade e um
+                    atendimento humano em cada etapa do processo.
+                </p>
+                <p>
+                    <strong>Valores:</strong> Integridade, Inovação, Compromisso e Respeito ao cliente.
+                </p>
+                <a href="#contato" class="btn-primary" style="display: inline-block;">Conheça nossa equipe</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DEPOIMENTOS ===== -->
+    <!--section class="section" id="depoimentos" style="background: var(--gray);">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">O que nossos <span>clientes dizem</span></h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Histórias reais de quem realizou o sonho da casa própria com a gente.
+            </p>
+
+            <div class="depoimentos-grid">
+                <div class="card-depoimento" data-aos="fade-up" data-aos-delay="0">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Cliente" loading="lazy" />
+                    <div class="stars">★★★★★</div>
+                    <p>"A Imóveis Prime foi essencial para encontrar o apartamento dos meus sonhos. Atendimento impecável do início ao fim!"</p>
+                    <h4>Mariana Costa</h4>
+                    <small style="color: #888;">Cliente desde 2021</small>
+                </div>
+
+                <div class="card-depoimento" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Cliente" loading="lazy" />
+                    <div class="stars">★★★★★</div>
+                    <p>"Vendi meu imóvel em tempo recorde com a ajuda da equipe. Profissionalismo e transparência acima da média."</p>
+                    <h4>Ricardo Almeida</h4>
+                    <small style="color: #888;">Cliente desde 2019</small>
+                </div>
+
+                <div class="card-depoimento" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Cliente" loading="lazy" />
+                    <div class="stars">★★★★★</div>
+                    <p>"Comprei minha primeira casa com a Imóveis Prime e não poderia estar mais feliz. Recomendo a todos!"</p>
+                    <h4>Fernanda Lima</h4>
+                    <small style="color: #888;">Cliente desde 2023</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTATO ===== -->
+    <section class="section" id="contato">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Fale com um <span>Especialista</span></h2>
+            <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Tire suas dúvidas, agende uma visita ou solicite uma avaliação gratuita.
+            </p>
+
+            <div class="contato-wrapper">
+
+                <!-- Formulário -->
+                <form id="contatoForm" data-aos="fade-right">
+                    <input type="text" id="nome" placeholder="Seu nome completo" required />
+                    <input type="tel" id="telefone" placeholder="Telefone / WhatsApp" required />
+                    <input type="email" id="email" placeholder="Seu e-mail" required />
+                    <textarea id="mensagem" placeholder="Como podemos ajudar?" required></textarea>
+                    <button type="submit" class="btn-primary">Enviar Mensagem</button>
+                </form>
+
+                <!-- Informações de contato -->
+                <div class="contato-info" data-aos="fade-left">
+                    <h3>Informações de Contato</h3>
+                    <p><i class="fas fa-phone"></i> (61) 99821-0399</p>
+                    <p><i class="fas fa-envelope"></i> adrianalima083@gmail.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Brasília-DF</p>
+                    <p><i class="fas fa-clock"></i> Seg a Sex: 9h às 18h | Sáb: 9h às 13h</p>
+
+                    <div class="footer-social" style="margin-top: 24px;">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+
+                <!-- Coluna 1: Logo e descrição -->
+                <div>
+                    <a href="#" class="logo">AL<span>Imóveis</span></a>
+                    <p>
+                        Há 5 anos realizando o sonho da casa própria em Brasília.
+                        Atendimento personalizado, imóveis exclusivos e suporte jurídico completo.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <!-- Coluna 2: Links rápidos -->
+                <div>
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#hero">Início</a></li>
+                        <li><a href="#imoveis">Imóveis</a></li>
+                        <li><a href="#sobre">Sobre Nós</a></li>
+                        <li><a href="#depoimentos">Depoimentos</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3: Serviços -->
+                <div>
+                    <h4>Serviços</h4>
+                    <ul>
+                        <li><a href="#">Compra de Imóveis</a></li>
+                        <li><a href="#">Venda de Imóveis</a></li>
+                        <li><a href="#">Avaliação Gratuita</a></li>
+                        <li><a href="#">Consultoria Jurídica</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 4: Contato -->
+                <div>
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><i class="fas fa-phone" style="color: var(--gold); margin-right: 8px;"></i>(61) 99821-0399</li>
+                        <li><i class="fas fa-envelope" style="color: var(--gold); margin-right: 8px;"></i>adrianalima083@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt" style="color: var(--gold); margin-right: 8px;"></i>Brasília-DF</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Rodapé inferior -->
+            <div class="footer-bottom">
+                <p>&copy; 2026 AL Imóveis. Todos os direitos reservados. | CRECI-SP 31.361</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <!-- AOS (animações) -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // 1. Inicializa o AOS (animações de fade)
+        AOS.init({ duration: 800, once: true });
+
+        // 2. Menu hambúrguer (abre/fecha no mobile)
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Fecha o menu ao clicar em um link (mobile)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 3. Header com efeito ao rolar
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // 4. Formulário de busca (simula a busca)
+        const searchForm = document.getElementById('searchForm');
+        if (searchForm) {
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const tipo = document.getElementById('tipo').value;
+                const cidade = document.getElementById('cidade').value;
+                const preco = document.getElementById('preco').value;
+                alert(`🔎 Buscando imóveis:\n\nTipo: ${tipo}\nCidade: ${cidade}\nPreço até: ${preco ? 'R$ ' + preco : 'sem limite'}`);
+            });
+        }
+
+        // 5. Validação do formulário de contato
+        const contatoForm = document.getElementById('contatoForm');
+        if (contatoForm) {
+            contatoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const nome = document.getElementById('nome').value.trim();
+                const telefone = document.getElementById('telefone').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const mensagem = document.getElementById('mensagem').value.trim();
+
+                // Validação básica
+                if (!nome || !telefone || !email || !mensagem) {
+                    alert('⚠️ Por favor, preencha todos os campos.');
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    alert('⚠️ Por favor, informe um e-mail válido.');
+                    return;
+                }
+
+                // Simula envio
+                alert(`✅ Mensagem enviada com sucesso!\n\nObrigado, ${nome}!\nEntraremos em contato em breve.`);
+                contatoForm.reset();
+            });
+        }
+    </script>
+
+</body>
+</html>
