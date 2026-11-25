@@ -539,6 +539,115 @@
             if (e.target.id === 'lightbox') fecharLightbox();
         });
 
+        // ===== BANCO DE DADOS DOS IMÓVEIS =====
+const imoveis = {
+    1: {
+        titulo: 'Apartamento 3 quartos',
+        endereco: 'Águas Claras - DF',
+        preco: 'R$ 1.250.000',
+        descricao: 'Excelente apartamento de 3 quartos (sendo 1 suíte) na Vila Mariana. Localização privilegiada, próximo ao metrô, supermercados e escolas.',
+        caracteristicas: [
+            { icone: 'fa-bed', texto: '3 quartos (1 suíte)' },
+            { icone: 'fa-bath', texto: '2 banheiros' },
+            { icone: 'fa-car', texto: '2 vagas de garagem' },
+            { icone: 'fa-ruler-combined', texto: '120 m² de área útil' }
+        ],
+        fotos: [
+            'img/ap-aguasClaras/apto-1.jpeg',
+            'img/ap-aguasClaras/apto-2.jpeg',
+            'img/ap-aguasClaras/apto-3.jpeg',
+            'img/ap-aguasClaras/apto-4.jpeg',
+            'img/ap-aguasClaras/apto-5.jpeg',
+            'img/ap-aguasClaras/apto-6.jpeg',
+            'img/ap-aguasClaras/apto-7.jpeg',
+            'img/ap-aguasClaras/apto-8.jpeg'
+        ]
+    },
+    2: {
+        titulo: 'Casa alto padrão',
+        endereco: 'Guará - DF',
+        preco: 'R$ 1.250.000',
+        descricao: 'Excelente apartamento de 3 quartos (sendo 1 suíte) na Vila Mariana. Localização privilegiada, próximo ao metrô, supermercados e escolas.',
+        caracteristicas: [
+            { icone: 'fa-bed', texto: '3 quartos (1 suíte)' },
+            { icone: 'fa-bath', texto: '2 banheiros' },
+            { icone: 'fa-car', texto: '2 vagas de garagem' },
+            { icone: 'fa-ruler-combined', texto: '120 m² de área útil' }
+        ],
+        fotos: [
+            'img/casa-guara/casa-guara1.jpeg',
+            'img/casa-guara/casa-guara2.jpeg',
+            'img/casa-guara/casa-guara3.jpeg',
+            'img/casa-guara/casa-guara4.jpeg',
+            'img/casa-guara/casa-guara5.jpeg',
+            'img/casa-guara/casa-guara6.jpeg',
+            'img/casa-guara/casa-guara7.jpeg',
+            'img/casa-guara/casa-guara8.jpeg',
+            'img/casa-guara/casa-guara9.jpeg',
+            'img/casa-guara/casa-guara10.jpeg',
+            'img/casa-guara/casa-guara11.jpeg',
+            'img/casa-guara/casa-guara12.jpeg',
+            'img/casa-guara/casa-guara13.jpeg',
+            'img/casa-guara/casa-guara14.jpeg',
+            'img/casa-guara/casa-guara15.jpeg',
+            'img/casa-guara/casa-guara16.jpeg'
+    ]
+
+    // Adicione o imóvel 2 aqui (com vírgula após o fechamento do 1)
+    }
+};
+
+// ===== LÊ O ?id= DA URL =====
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id') || '1';
+const imovel = imoveis[id];
+
+if (!imovel) {
+    document.body.innerHTML = `
+        <div style="text-align: center; padding: 80px 20px; font-family: Montserrat, sans-serif;">
+            <h1>Imóvel não encontrado 😕</h1>
+            <p>O imóvel que você procura não existe.</p>
+            <a href="index.html" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: #c9a959; color: #1a2a3a; border-radius: 30px; text-decoration: none; font-weight: 600;">Voltar ao site</a>
+        </div>
+    `;
+    throw new Error('Imóvel não encontrado');
+}
+
+// ===== PREENCHE A PÁGINA =====
+document.getElementById('titulo').textContent = imovel.titulo;
+document.getElementById('endereco').textContent = imovel.endereco;
+document.getElementById('preco').textContent = imovel.preco;
+document.getElementById('precoCard').textContent = imovel.preco;
+document.getElementById('descricao').textContent = imovel.descricao;
+document.title = `${imovel.titulo} - Imóveis Prime`;
+
+// ===== SUBSTITUI AS FOTOS =====
+fotos.length = 0;
+imovel.fotos.forEach(f => fotos.push(f));
+
+document.getElementById('fotoPrincipal').src = fotos[0];
+
+const minis = document.querySelectorAll('.galeria-miniaturas img');
+minis.forEach((mini, i) => {
+    const idx = i + 1;
+    if (fotos[idx]) {
+        mini.src = fotos[idx];
+        mini.style.display = '';
+    } else {
+        mini.style.display = 'none';
+    }
+});
+
+// ===== CARACTERÍSTICAS =====
+const listaCarac = document.getElementById('caracteristicas');
+if (listaCarac && imovel.caracteristicas) {
+    listaCarac.innerHTML = imovel.caracteristicas
+        .map(c => `<li><i class="fas ${c.icone}"></i> ${c.texto}</li>`)
+        .join('');
+}
+
+atualizarContador();
+
         // ===== FORMULÁRIO DE INTERESSE =====
         document.getElementById('formInteresse').addEventListener('submit', (e) => {
             e.preventDefault();
